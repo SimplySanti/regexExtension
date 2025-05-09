@@ -1,25 +1,45 @@
 import { useState } from "react"
 
-function IndexPopup() {
-  const [data, setData] = useState("")
+function getIdOfCurrentTab() {
+chrome.tabs.query(
+  {currentWindow: true, active : true},
+  function(tabArray){}
+)
+}
 
+
+function IndexPopup() {
+   const [tabId, setTabId] = useState<number>(0);
+   chrome.tabs.query(
+     {currentWindow: true, active : true},
+     function(tabArray){
+            let tab = tabArray[0];
+            setTabId(tab.id);
+     }
+   )
+
+  if (tabId != 0) {
+
+    chrome.scripting
+    .executeScript({
+      target : {tabId : tabId},
+      world: "MAIN", func: () => alert("hi"),
+    }).then(() => console.log("script loaded"))
+
+  }
+
+  console.log(tabId);
+  const [data, setData] = useState("")
   return (
-    <div
+     <div
       style={{
         padding: 16
       }}>
-      <h2>
-        Welcome to your{" "}
-        <a href="https://www.plasmo.com" target="_blank">
-          Plasmo
-        </a>{" "}
-        Extension!
-      </h2>
-      <input onChange={(e) => setData(e.target.value)} value={data} />
-      <a href="https://docs.plasmo.com" target="_blank">
-        View Docs
-      </a>
-    </div>
+      Hello 
+      <div onClick={() =>{
+                console.log("hi");
+      }}>Hi here </div>
+     </div>
   )
 }
 

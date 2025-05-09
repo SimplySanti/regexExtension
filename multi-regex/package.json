@@ -4,6 +4,7 @@
   "version": "0.0.1",
   "description": "An extension that allows multi highlighting in any site.",
   "author": "TheBuggers",
+  "permissions": ["activeTab", "scripting"],
   "scripts": {
     "dev": "plasmo dev",
     "build": "plasmo build",

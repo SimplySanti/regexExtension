@@ -1,28 +1,49 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import { Storage } from "@plasmohq/storage"
+import { useStorage } from "@plasmohq/storage/hook"
+
+const storageInstance = new Storage({ area: "local" })
 
 function IndexPopup() {
-  const [regexInput, setRegexInput] = useState("Plasmo")
+  const [storedValue, , {
+    setRenderValue,
+    setStoreValue,
+    remove
+  }] = useStorage({
+    key: "hailing",
+    instance: storageInstance
+  }, (v) => v === undefined ? "42" : v)
 
-  const handleClick = () => {
-    chrome.tabs.query({ active: true, currentWindow: true }, ([tab]) => {
-      if (tab.id) {
-        chrome.tabs.sendMessage(tab.id, {
-          type: "HIGHLIGHT_TEXT",
-          regex: regexInput
-        })
-      }
+  const [inputValue, setInputValue] = useState(storedValue)
+
+  useEffect(() => {
+    chrome.storage.local.get(null, (items) => {
+      console.log("Current local storage:", items)
     })
-  }
+  }, [])
 
   return (
-    <div>
+    <div className="p-4">
+      <h1>Stored: {storedValue}</h1>
+
       <input
-        type="text"
-        value={regexInput}
-        onChange={(e) => setRegexInput(e.target.value)}
-        placeholder="Enter regex"
+        value={inputValue}
+        onChange={(e) => {
+          setInputValue(e.target.value)
+          setRenderValue(e.target.value) // reflect immediately
+        }}
       />
-      <button onClick={handleClick}>Highlight</button>
+
+      <button onClick={() => setStoreValue(inputValue)}>
+        Save
+      </button>
+
+      <button onClick={() => {
+        remove()
+        setInputValue("") // clear input manually
+      }}>
+        Remove
+      </button>
     </div>
   )
 }

@@ -4,14 +4,15 @@
   "version": "0.0.1",
   "description": "An extension that allows multi highlighting in any site.",
   "author": "TheBuggers",
-  "permissions": ["activeTab", "scripting"],
   "scripts": {
     "dev": "plasmo dev",
     "build": "plasmo build",
     "package": "plasmo package"
   },
   "dependencies": {
-    "plasmo": "0.90.3", 
+    "@plasmohq/messaging": "^0.7.1",
+    "@plasmohq/storage": "^1.15.0",
+    "plasmo": "0.90.3",
     "react": "18.2.0",
     "react-dom": "18.2.0"
   },
@@ -28,5 +29,8 @@
     "host_permissions": [
       "https://*/*"
     ]
-  }
+  },
+  "permissions": [
+    "storage"
+  ]
 }

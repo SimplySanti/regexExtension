@@ -8,12 +8,12 @@ export class MockRegexService implements IRegexService {
   private nextId: number
   private expressions: RegexExpression[]
 
-  MockRegexService() {
+  constructor() {
     this.nextId = 0
     this.expressions = []
   }
 
-  registerExpression(re: RegExp): RegexExpression {
+  async registerExpression(re: RegExp): RegexExpression {
     const newExpression: RegexExpression = {
       id: this.nextId,
       state: RegexExpressionState.Active,
@@ -24,11 +24,11 @@ export class MockRegexService implements IRegexService {
     return newExpression
   }
 
-  getExpressions(): RegexExpression[] {
+  async getExpressions(): RegexExpression[] {
     return this.expressions
   }
 
-  deleteExpression(id: number): RegexExpression {
+  async deleteExpression(id: number): RegexExpression {
     for (const [indx, exp] of this.expressions.entries()) {
       if (exp.id == id) {
         this.expressions.splice(indx, 1)
@@ -38,7 +38,7 @@ export class MockRegexService implements IRegexService {
     throw Exception("[id not found]")
   }
 
-  getExpression(id: number): RegexExpression {
+  async getExpression(id: number): RegexExpression {
     for (const [indx, exp] of this.expressions.entries()) {
       if (exp.id == id) {
         return exp
@@ -47,7 +47,7 @@ export class MockRegexService implements IRegexService {
     throw Exception("[id not found]")
   }
 
-  updateExpression(newExpression: RegexExpression): RegexExpression {
+  async updateExpression(newExpression: RegexExpression): RegexExpression {
     for (const [indx, exp] of this.expressions.entries()) {
       if (exp.id == newExpression.id) {
         this.expressions[indx] = newExpression

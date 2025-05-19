@@ -1,5 +1,7 @@
 import { useState } from "react"
 
+import { RegexService } from "./RegexService/RegexService.ts"
+
 function getIdOfCurrentTab() {
   chrome.tabs.query(
     { currentWindow: true, active: true },
@@ -14,30 +16,31 @@ function IndexPopup() {
     setTabId(tab.id)
   })
 
-  if (tabId != 0) {
-    chrome.scripting
-      .executeScript({
-        target: { tabId: tabId },
-        world: "MAIN",
-        func: () => alert("hi")
-      })
-      .then(() => console.log("script loaded"))
-  }
-
   console.log(tabId)
-  const [data, setData] = useState("")
+
+  const regser = new RegexService(tabId)
+
   return (
     <div
       style={{
         padding: 16
       }}>
-      Hello
-      <div
-        onClick={() => {
-          console.log("hi")
+      <input
+        type="text"
+        onChange={async (e) => {
+          console.log("this is the inputted value")
+          console.log(e.target.value)
+          await regser.registerExpression(new RegExp(e.target.value))
+          console.log("this should have been registered")
+        }}
+      />
+
+      <button
+        onClick={async () => {
+          await regser.deleteExpression(0)
         }}>
         Hi here{" "}
-      </div>
+      </button>
     </div>
   )
 }

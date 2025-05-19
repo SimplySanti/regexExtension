@@ -10,11 +10,11 @@ type RegexExpression = {
 }
 
 interface IRegexService {
-  registerExpression(re: RegExp): RegexExpression
-  getExpressions(): RegexExpression[]
-  deleteExpression(id: number): RegexExpression
-  getExpression(id: number): RegexExpression
-  updateExpression(newExpression: RegexExpression): RegexExpression
+  registerExpression(re: RegExp): Promise<RegexExpression>
+  getExpressions(): Promise<RegexExpression[]>
+  deleteExpression(id: number): Promise<RegexExpression>
+  getExpression(id: number): Promise<RegexExpression>
+  updateExpression(newExpression: RegexExpression): Promise<RegexExpression>
 }
 
 export { RegexExpressionState, RegexExpression, IRegexService }

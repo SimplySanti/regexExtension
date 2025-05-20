@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 import { RegexExpression } from "./RegexService/IRegexService.ts"
 import { RegexService } from "./RegexService/RegexService.ts"
@@ -10,10 +10,15 @@ function IndexPopup() {
   const [newColor, setNewColor] = useState("#A0FFFF")
   const [reg, setRegSer] = useState<RegexService>(new RegexService(0))
 
-  chrome.tabs.query({ currentWindow: true, active: true }, function (tabArray) {
-    let tab = tabArray[0]
-    setRegSer(new RegexService(tab.id))
-  })
+  useEffect(() => {
+    chrome.tabs.query(
+      { currentWindow: true, active: true },
+      function (tabArray) {
+        let tab = tabArray[0]
+        setRegSer(new RegexService(tab.id))
+      }
+    )
+  }, [])
 
   const addExpression = async () => {
     if (newRegex.trim() === "") return
@@ -24,6 +29,7 @@ function IndexPopup() {
     const newexpr = await reg.registerExpression("ACTIVE", newRegex, newColor)
     console.log(newexpr)
 
+    setRegSer(reg)
     setExpressions([...expressions, newexpr])
     setNewRegex("")
     setNewColor("#A0FFFF")
@@ -37,7 +43,9 @@ function IndexPopup() {
     console.log(expressions)
     const updated = expressions.filter((exp) => exp.id !== id)
     console.log(updated)
+
     setExpressions(updated)
+    setRegSer(reg)
   }
 
   const changeColor = (index, newColor) => {

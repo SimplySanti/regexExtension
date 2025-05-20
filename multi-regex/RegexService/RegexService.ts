@@ -36,6 +36,8 @@ export class RegexService implements IRegexService {
         colorHexStr: string
       ) => {
         const re = RegExp(reString, "g")
+        console.log("regex")
+        console.log(re)
 
         const nodeIterator = document.createTreeWalker(
           document.body,
@@ -56,11 +58,16 @@ export class RegexService implements IRegexService {
         let curnode = nodeIterator.nextNode()
 
         while (curnode != null) {
+          re.lastIndex = 0
           if (
             curnode.parentNode.tagName !== "SCRIPT" &&
             curnode.parentNode.tagName !== "STYLE" &&
             re.test(curnode.nodeValue)
           ) {
+            re.lastIndex = 0
+            console.log("match")
+            console.log(re)
+            console.log(curnode)
             const prov = curnode
             curnode = nodeIterator.nextNode()
             const parent = prov.parentNode
@@ -69,6 +76,7 @@ export class RegexService implements IRegexService {
             let lastNode = prov
             let lastMatchEnd = -1
             for (const match of str.matchAll(re)) {
+              console.log("getting to work")
               if (match.index - 1 >= lastMatchEnd + 1) {
                 const newTextNode = document.createTextNode(
                   str.substring(lastMatchEnd + 1, match.index)
@@ -114,25 +122,23 @@ export class RegexService implements IRegexService {
   }
 
   async deleteExpression(id: number): RegexExpression {
-    for (const [indx, exp] of this.expressions.entries()) {
-      if (exp.id == id) {
-        this.expressions.splice(indx, 1)
-        await chrome.scripting.executeScript({
-          target: { tabId: this.tabId },
-          world: "MAIN",
-          args: [id],
-          func: (regId: number) => {
-            for (const node of document.querySelectorAll(
-              `[data-regexExtension="${regId}"]`
-            )) {
-              const newText = document.createTextNode(node.innerText)
-              node.parentNode.replaceChild(newText, node)
-            }
-          }
-        })
+    console.log("commanded to delete")
+    console.log(id)
+    console.log(this.expressions)
+    await chrome.scripting.executeScript({
+      target: { tabId: this.tabId },
+      world: "MAIN",
+      args: [id],
+      func: (regId: number) => {
+        for (const node of document.querySelectorAll(
+          `[data-regexExtension="${regId}"]`
+        )) {
+          const newText = document.createTextNode(node.innerText)
+          node.parentNode.replaceChild(newText, node)
+        }
       }
-    }
-    throw Exception("[id not found]")
+    })
+    console.log("will get error")
   }
 
   async activateExpression(id: number): RegexExpression {
@@ -155,7 +161,6 @@ export class RegexService implements IRegexService {
         })
       }
     }
-    throw Exception("[id not found]")
   }
 
   async deactivateExpression(id: number): RegexExpression {
@@ -180,7 +185,6 @@ export class RegexService implements IRegexService {
         })
       }
     }
-    throw Exception("[id not found]")
   }
 
   async changeColor(id: string, colorHexStr: number): RegexExpression {
@@ -203,7 +207,6 @@ export class RegexService implements IRegexService {
           })
       }
     }
-    throw Exception("[id not found]")
   }
 
   async getExpression(id: number): RegexExpression {

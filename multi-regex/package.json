@@ -14,7 +14,8 @@
     "@plasmohq/storage": "^1.15.0",
     "plasmo": "0.90.3",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
     "@ianvs/prettier-plugin-sort-imports": "4.1.1",
@@ -27,10 +28,14 @@
   },
   "manifest": {
     "host_permissions": [
-      "https://*/*"
+      "https://*/*",
+      "https://api.openai.com/"
     ]
   },
   "permissions": [
     "storage"
-  ]
+  ],
+  "background": {
+    "service_worker": "background/index.ts"
+  }
 }

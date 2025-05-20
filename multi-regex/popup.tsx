@@ -30,7 +30,7 @@ function IndexPopup() {
         onChange={async (e) => {
           console.log("this is the inputted value")
           console.log(e.target.value)
-          await regser.registerExpression(new RegExp(e.target.value))
+          await regser.registerExpression("ACTIVE", e.target.value, "#32a852")
           console.log("this should have been registered")
         }}
       />

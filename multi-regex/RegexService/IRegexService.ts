@@ -1,20 +1,21 @@
-enum RegexExpressionState {
-  Active,
-  Inactive
-}
-
-type RegexExpression = {
+export type RegexExpression = {
   id: number
   state: RegexExpressionState
-  re: RegExp
+  restr: string
+  colorHexStr: string
 }
 
-interface IRegexService {
-  registerExpression(re: RegExp): Promise<RegexExpression>
-  getExpressions(): Promise<RegexExpression[]>
-  deleteExpression(id: number): Promise<RegexExpression>
+export interface IRegexService {
+  registerExpression(
+    state: "ACTIVE" | "INACTIVE",
+    restr: string,
+    colorHexStr: string
+  ): Promise<RegexExpression>
+
   getExpression(id: number): Promise<RegexExpression>
-  updateExpression(newExpression: RegexExpression): Promise<RegexExpression>
-}
+  getExpressions(): Promise<RegexExpression[]>
 
-export { RegexExpressionState, RegexExpression, IRegexService }
+  updateExpression(newExpression: RegexExpression): Promise<RegexExpression>
+
+  deleteExpression(id: number): Promise<RegexExpression>
+}

@@ -1,3 +1,4 @@
+/*
 import {
   IRegexService,
   RegexExpression,
@@ -58,3 +59,4 @@ export class MockRegexService implements IRegexService {
     throw Exception("[id not found]")
   }
 }
+*/

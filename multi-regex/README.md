@@ -31,3 +31,12 @@ This should create a production bundle for your extension, ready to be zipped an
 ## Submit to the webstores
 
 The easiest way to deploy your Plasmo extension is to use the built-in [bpp](https://bpp.browser.market) GitHub action. Prior to using this action however, make sure to build your extension and upload the first version to the store to establish the basic credentials. Then, simply follow [this setup instruction](https://docs.plasmo.com/framework/workflows/submit) and you should be on your way for automated submission!
+
+## TODO
+- [ ] Change data model of RegexExpression to have regex as a string
+- [ ] change register expression method of RegexService to be able to take initial state and colour of Regex Expression
+- [ ] Highlight only substrings that match with the regex
+- [ ] Check and test service for complex regex
+- [ ] Test deletion logic
+- [ ] Debug page crashes when webpages contain script tags
+NOTE: the extension only seems to not work on google.com

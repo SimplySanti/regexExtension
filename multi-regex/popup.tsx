@@ -37,12 +37,12 @@ function IndexPopup() {
     setNewColor("#A0FFFF")
   }
 
-  const addRegexFromAI = async (regexString: string) => {
-  if (regexString.trim() === "") return
+  const addRegexFromAI = (regexString: string) => {
+    if (regexString.trim() === "") return
 
-  const newexpr = await reg.registerExpression("ACTIVE", regexString, "#A0FFFF")
-  setExpressions([...expressions, newexpr])
-}
+    setNewRegex(regexString)
+    setNewColor("#A0FFFF") // Optional: preset a default color
+  }
 
   const deleteExpression = async (id) => {
     console.log("trying to delete")

@@ -11,7 +11,7 @@ const handler: PlasmoMessaging.MessageHandler<RequestBody, RequestResponse> = as
 
   const apiKey = await getApiKey(); 
 
-  const prompt = `Provide me a regex expression based on the following description given by the user: "${req.body.expression}". Just return the regular expression with no description nor explanation.`;
+  const prompt = `Provide me a regex expression based on the following description given by the user: "${req.body.expression}". Just return the regular expression with no description nor explanation and do not include any flag.`;
 
   try {
   const resp = await fetch("https://api.openai.com/v1/chat/completions", {

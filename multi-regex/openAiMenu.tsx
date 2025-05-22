@@ -11,6 +11,8 @@ export default function OpenAIMenu({addRegex} : GPTInputProps){
     const [apiKey, setApiKeyState] = useState(null);
     const [inputApi, setInputApi] = useState("");
     const [gptInput, setGptInput] = useState("");
+    const [loading, setLoading] = useState(false);
+
 
     useEffect(() => {
         // Assume getApiKey returns a Promise
@@ -32,6 +34,7 @@ export default function OpenAIMenu({addRegex} : GPTInputProps){
     }
 
     async function callOpenAi() {
+        setLoading(true)
         const resp = await sendToBackground({
         name: "open-ai",
         body: {
@@ -47,6 +50,7 @@ export default function OpenAIMenu({addRegex} : GPTInputProps){
             addRegex(resp);
             setGptInput("");
         }
+        setLoading(false)
     }
 
     return(
@@ -60,10 +64,11 @@ export default function OpenAIMenu({addRegex} : GPTInputProps){
 
             {apiKey != null && 
                 <div>
-                    <p>Saved API Key: xxx{apiKey}</p>
+                    <p>Saved API Key: xxx{apiKey.slice(-5)}</p>
                     <button onClick={deleteKey}>Delete API Key</button>
                     <input placeholder="What would you like to find in the website?" onChange={(e) => setGptInput(e.target.value)} value={gptInput}/>
                     <button onClick={callOpenAi}>Search</button>
+                    {loading && <p>Loading expression...</p>}
                 </div>
             }
             

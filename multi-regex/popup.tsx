@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 
 import { RegexExpression } from "./RegexService/IRegexService.ts"
 import { RegexService } from "./RegexService/RegexService.ts"
+import OpenAIMenu from "~openAiMenu.jsx"
 
 function IndexPopup() {
   const [expressions, setExpressions] = useState<RegexExpression[]>([])
@@ -9,6 +10,7 @@ function IndexPopup() {
   const [newRegex, setNewRegex] = useState("")
   const [newColor, setNewColor] = useState("#A0FFFF")
   const [reg, setRegSer] = useState<RegexService>(new RegexService(0))
+  const [openAiMenu, setOpenAiMenu] = useState(false)
 
   useEffect(() => {
     chrome.tabs.query(
@@ -34,6 +36,13 @@ function IndexPopup() {
     setNewRegex("")
     setNewColor("#A0FFFF")
   }
+
+  const addRegexFromAI = async (regexString: string) => {
+  if (regexString.trim() === "") return
+
+  const newexpr = await reg.registerExpression("ACTIVE", regexString, "#A0FFFF")
+  setExpressions([...expressions, newexpr])
+}
 
   const deleteExpression = async (id) => {
     console.log("trying to delete")
@@ -275,6 +284,8 @@ function IndexPopup() {
           +
         </button>
       </div>
+      <button onClick={() => setOpenAiMenu(!openAiMenu)}>ChatGPT</button>
+      {openAiMenu && <OpenAIMenu addRegex={addRegexFromAI}/>}
     </div>
   )
 }

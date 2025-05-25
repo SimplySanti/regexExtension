@@ -1,7 +1,6 @@
 import { useEffect, useState, type CSSProperties } from "react"
-
-import { RegexExpression } from "./RegexService/IRegexService.ts"
-import { RegexService } from "./RegexService/RegexService.ts"
+import type { RegexExpression } from "./RegexService/IRegexService"
+import { RegexService } from "./RegexService/RegexService"
 import OpenAIMenu from "~openAiMenu.jsx"
 
 function IndexPopup() {

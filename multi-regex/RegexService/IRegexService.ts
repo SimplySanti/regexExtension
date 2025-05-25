@@ -1,9 +1,12 @@
-export type RegexExpression = {
-  id: number
-  state: RegexExpressionState
-  restr: string
-  colorHexStr: string
-}
+type RegexExpressionState = "ACTIVE" | "INACTIVE"
+
+export type RegexExpression =
+  {
+    id: number
+    state: RegexExpressionState
+    restr: string
+    colorHexStr: string
+  }
 
 export interface IRegexService {
   registerExpression(

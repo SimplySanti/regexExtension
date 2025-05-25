@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, type CSSProperties } from "react"
 
 import { RegexExpression } from "./RegexService/IRegexService.ts"
 import { RegexService } from "./RegexService/RegexService.ts"
@@ -52,55 +52,20 @@ function IndexPopup() {
     console.log(expressions)
     const updated = expressions.filter((exp) => exp.id !== id)
     console.log(updated)
-
     setExpressions(updated)
     setRegSer(reg)
-  }
-
-  const changeColor = (index, newColor) => {
-    const updated = [...expressions]
-    updated[index] = { ...updated[index], color: newColor }
-    setExpressions(updated)
   }
 
   const [colorPickerIndex, setColorPickerIndex] = useState(null)
   const [showInfo, setShowInfo] = useState(false)
 
-  const colorOptions = [
-    "#A0FFFF",
-    "#D8B5FF",
-    "#FEFFD5",
-    "#00BFFF",
-    "#9400D3",
-    "#F7FD00",
-    "#3A75C4",
-    "#6A0DAD",
-    "#654321"
-  ]
-
-  const popperStyle = {
-    position: "absolute",
-    top: "calc(100% + 8px)",
+  const popperStyle: CSSProperties = {
+    marginTop: 4,
     right: 0,
+    borderRadius: 4,
     background: "#fff",
     border: "1px solid #ccc",
-    borderRadius: 4,
     padding: "8px 12px",
-    boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
-    zIndex: 100
-  }
-
-  const pickerStyle = {
-    position: "absolute",
-    top: "calc(100% + 4px)",
-    left: "-48px",
-    background: "#fff",
-    border: "1px solid #ccc",
-    borderRadius: 4,
-    padding: 8,
-    display: "grid",
-    gridTemplateColumns: "repeat(3, 24px)",
-    gap: 6,
     boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
     zIndex: 100
   }
@@ -111,7 +76,7 @@ function IndexPopup() {
         padding: 16,
         width: 400,
         boxSizing: "border-box",
-        fontFamily: "Arial, sans-serif"
+        fontFamily: "Arial, sans-serif",
       }}>
       <div
         style={{
@@ -178,16 +143,6 @@ function IndexPopup() {
               color: "#333"
             }}
           />
-          <div
-            style={{
-              width: 40,
-              height: 40,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center"
-            }}>
-            <input type="checkbox" />
-          </div>
           <div style={{ position: "relative" }}>
             <div
               onClick={() =>
@@ -202,27 +157,6 @@ function IndexPopup() {
                 border: "1px solid #999"
               }}
             />
-            {colorPickerIndex === index && (
-              <div style={pickerStyle}>
-                {colorOptions.map((col) => (
-                  <div
-                    key={col}
-                    onClick={() => changeColor(index, col)}
-                    style={{
-                      width: 24,
-                      height: 24,
-                      backgroundColor: col,
-                      borderRadius: 3,
-                      cursor: "pointer",
-                      border:
-                        col === expression.colorHexStr
-                          ? "2px solid #333"
-                          : "1px solid #ccc"
-                    }}
-                  />
-                ))}
-              </div>
-            )}
           </div>
           <button
             onClick={async () => await deleteExpression(expression.id)}
@@ -242,6 +176,16 @@ function IndexPopup() {
             }}>
             ×
           </button>
+          <div
+            style={{
+              width: 40,
+              height: 40,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center"
+            }}>
+            <input type="checkbox" />
+          </div>
         </div>
       ))}
 
@@ -263,11 +207,16 @@ function IndexPopup() {
           value={newColor}
           onChange={(e) => setNewColor(e.target.value)}
           style={{
-            flex: 1,
-            padding: 0,
-            border: "none",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: 4,
+            borderColor: "#F0F0F0",
             borderRadius: 5,
-            height: 40
+            height: 40,
+            width: 40,
+            backgroundColor: "#F0F0F0",
+            cursor: "pointer",
           }}
         />
         <button
@@ -276,16 +225,18 @@ function IndexPopup() {
             flexShrink: 0,
             padding: "0 12px",
             fontSize: 20,
-            backgroundColor: "#DDDDDD",
+            borderWidth: 2,
+            borderColor: "#00D1D1",
             border: "none",
             borderRadius: 5,
-            cursor: "pointer"
+            cursor: "pointer",
+            color: "#fff",
           }}>
           +
         </button>
       </div>
       <button onClick={() => setOpenAiMenu(!openAiMenu)}>ChatGPT</button>
-      {openAiMenu && <OpenAIMenu addRegex={addRegexFromAI}/>}
+      {openAiMenu && <OpenAIMenu addRegex={addRegexFromAI} />}
     </div>
   )
 }

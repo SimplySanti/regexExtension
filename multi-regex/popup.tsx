@@ -45,13 +45,9 @@ function IndexPopup() {
   }
 
   const deleteExpression = async (id) => {
-    console.log("trying to delete")
-    console.log(typeof id)
-    console.log(id)
     await reg.deleteExpression(id)
     console.log(expressions)
     const updated = expressions.filter((exp) => exp.id !== id)
-    console.log(updated)
     setExpressions(updated)
     setRegSer(reg)
   }
@@ -88,9 +84,9 @@ function IndexPopup() {
         <h2
           style={{
             margin: 0,
-            fontSize: 20,
+            fontSize: "1.5rem",
             fontWeight: "normal",
-            color: "#333"
+            color: "#000000"
           }}>
           MULTI REGEX
         </h2>
@@ -121,7 +117,6 @@ function IndexPopup() {
           )}
         </div>
       </div>
-
       {expressions.map((expression, index) => (
         <div
           key={index}
@@ -139,8 +134,9 @@ function IndexPopup() {
               padding: 8,
               border: "1px solid #ccc",
               borderRadius: 5,
-              backgroundColor: "#f5f5f5",
-              color: "#333"
+              backgroundColor: "white",
+              color: "#333",
+              height: 25,
             }}
           />
           <div style={{ position: "relative" }}>
@@ -176,7 +172,7 @@ function IndexPopup() {
             }}>
             ×
           </button>
-          <div
+          {/* <div
             style={{
               width: 40,
               height: 40,
@@ -185,21 +181,22 @@ function IndexPopup() {
               justifyContent: "center"
             }}>
             <input type="checkbox" />
-          </div>
+          </div> */}
         </div>
       ))}
 
-      <div style={{ display: "flex", gap: 8, marginBottom: 12 }}>
+      <div style={{ display: "flex", gap: 8, marginBottom: 8 }}>
         <input
           type="text"
           value={newRegex}
           onChange={(e) => setNewRegex(e.target.value)}
-          placeholder="New regex"
+          placeholder="Ex: ([A-Z])\w+"
           style={{
-            flex: 2,
+            flex: 1,
             padding: 8,
             border: "1px solid #ccc",
-            borderRadius: 5
+            borderRadius: 5,
+            paddingLeft: 16
           }}
         />
         <input
@@ -213,6 +210,8 @@ function IndexPopup() {
             padding: 4,
             borderColor: "#F0F0F0",
             borderRadius: 5,
+            paddingLeft: 6,
+            paddingRight: 6,
             height: 40,
             width: 40,
             backgroundColor: "#F0F0F0",
@@ -226,16 +225,36 @@ function IndexPopup() {
             padding: "0 12px",
             fontSize: 20,
             borderWidth: 2,
-            borderColor: "#00D1D1",
             border: "none",
             borderRadius: 5,
             cursor: "pointer",
-            color: "#fff",
+            color: "white",
+            backgroundColor: "#0838a2",
+            height: 40,
+            width: 40,
           }}>
           +
         </button>
       </div>
-      <button onClick={() => setOpenAiMenu(!openAiMenu)}>ChatGPT</button>
+      {
+        openAiMenu === false &&
+        <button
+          style={{
+            height: 40,
+            width: "100%",
+            backgroundColor: "#55e7b4",
+            border: "2px solid #000000",
+            borderRadius: 5,
+            padding: "8px 12px",
+            cursor: "pointer",
+            color: "#000000",
+            fontSize: 14,
+            fontWeight: "regular",
+          }}
+          onClick={() => setOpenAiMenu(!openAiMenu)}>
+          GENERAR CON IA
+        </button>
+      }
       {openAiMenu && <OpenAIMenu addRegex={addRegexFromAI} />}
     </div>
   )
